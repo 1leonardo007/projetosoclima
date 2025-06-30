@@ -1,39 +1,38 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt">
 <head>
+    <meta charset="UTF-8">
     <title>Informações da Pessoa</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
+            background-color: #f4f4f4;
             text-align: center;
-            padding-top: 40px;
+            padding-top: 50px;
         }
         .card {
             background-color: white;
             display: inline-block;
-            padding: 30px;
+            padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 0 12px rgba(0,0,0,0.2);
+            box-shadow: 0 0 10px gray;
         }
         img {
             width: 200px;
             border-radius: 8px;
         }
-        h2 {
-            margin-bottom: 10px;
-        }
     </style>
 </head>
 <body>
     <div class="card">
-        <h2>{{ pessoa[1] }}</h2>
-        <img src="{{ url_for('static', filename='fotos/' + pessoa[6]) }}" alt="Foto"><br><br>
-        <p><strong>ID:</strong> {{ pessoa[0] }}</p>
-        <p><strong>Acesso:</strong> {{ pessoa[2] }}</p>
-        <p><strong>Entrada:</strong> {{ pessoa[3] }}</p>
-        <p><strong>Saída:</strong> {{ pessoa[4] }}</p>
-        <p><strong>Acesso Noturno:</strong> {{ 'Sim' if pessoa[5] == 1 else 'Não' }}</p>
+        <h2>{{ nome }}</h2>
+        <img src="{{ url_for('static', filename='fotos/' + foto) }}" alt="Foto de {{ nome }}">
+        <p><strong>ID:</strong> {{ id }}</p>
+        <p><strong>Acesso:</strong> {{ acesso }}</p>
+        <p><strong>Entrada:</strong> {{ entrada }}</p>
+        <p><strong>Saída:</strong> {{ saida }}</p>
+        <p><strong>Acesso Noturno:</strong> {{ 'Sim' if acesso_noturno == 1 else 'Não' }}</p>
     </div>
 </body>
 </html>
+

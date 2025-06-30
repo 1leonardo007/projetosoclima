@@ -19,9 +19,17 @@ def exibir_pessoa(id):
     conn.close()
 
     if pessoa:
-        return render_template("pessoas.html", pessoa=pessoa)
+        return render_template("pessoas.html",
+                               id=pessoa[0],
+                               nome=pessoa[1],
+                               acesso=pessoa[2],
+                               entrada=pessoa[3],
+                               saida=pessoa[4],
+                               acesso_noturno=pessoa[5],
+                               foto=pessoa[6])
     else:
-        return "❌ Pessoa não encontrada", 404
+        return "Pessoa não encontrada", 404
+
 
 @app.route('/gerar_qrcode/<int:id>')
 def gerar_qrcode(id):
