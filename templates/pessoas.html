@@ -1,34 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Informações da Pessoa</title>
+    <title>Dados da Pessoa</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
+            font-family: Arial;
+            background-color: #f0f0f0;
             text-align: center;
-            padding-top: 40px;
+            padding-top: 50px;
         }
         .card {
             background-color: white;
             display: inline-block;
-            padding: 30px;
+            padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 0 12px rgba(0,0,0,0.2);
+            box-shadow: 0 0 10px gray;
         }
         img {
             width: 200px;
             border-radius: 8px;
-        }
-        h2 {
-            margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
     <div class="card">
         <h2>{{ pessoa[1] }}</h2>
-        <img src="{{ url_for('static', filename='fotos/' + pessoa[6]) }}" alt="Foto"><br><br>
+        <img src="{{ url_for('static', filename='fotos/' + pessoa[6]) }}" alt="Foto">
         <p><strong>ID:</strong> {{ pessoa[0] }}</p>
         <p><strong>Acesso:</strong> {{ pessoa[2] }}</p>
         <p><strong>Entrada:</strong> {{ pessoa[3] }}</p>
