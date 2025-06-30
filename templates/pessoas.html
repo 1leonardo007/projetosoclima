@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Informações da Pessoa</title>
+    <title>Dados da Pessoa</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: Arial;
+            background-color: #f0f0f0;
             text-align: center;
             padding-top: 50px;
         }
@@ -25,15 +24,14 @@
 </head>
 <body>
     <div class="card">
-        <h2>{{ nome }}</h2>
-        <img src="{{ url_for('static', filename='fotos/' + foto) }}" alt="Foto de {{ nome }}">
-        <p><strong>ID:</strong> {{ id }}</p>
-        <p><strong>Cargo:</strong> {{ pessoa[6] }}</p>
-        <p><strong>Acesso:</strong> {{ acesso }}</p>
-        <p><strong>Entrada:</strong> {{ entrada }}</p>
-        <p><strong>Saída:</strong> {{ saida }}</p>
-        <p><strong>Acesso Noturno:</strong> {{ 'Sim' if acesso_noturno == 1 else 'Não' }}</p>
+        <h2>{{ pessoa[1] }}</h2>
+        <img src="{{ url_for('static', filename='fotos/' + pessoa[6]) }}" alt="Foto">
+        <p><strong>ID:</strong> {{ pessoa[0] }}</p>
+        <p><strong>Acesso:</strong> {{ pessoa[2] }}</p>
+        <p><strong>Entrada:</strong> {{ pessoa[3] }}</p>
+        <p><strong>Saída:</strong> {{ pessoa[4] }}</p>
+        <p><strong>Acesso Noturno:</strong> {{ 'Sim' if pessoa[5] == 1 else 'Não' }}</p>
+        <p><strong>Cargo:</strong> {{ pessoa[7] }}</p>
     </div>
 </body>
 </html>
-
