@@ -14,7 +14,7 @@ def home():
 def exibir_pessoa(id):
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
-    cursor.execute("SELECT id, nome, acesso, entrada, saida, acesso_noturno, foto FROM informacoes WHERE id = ?", (id,))
+    cursor.execute("SELECT id, nome, acesso, entrada, saida, acesso_noturno, foto, cargo FROM informacoes WHERE id = ?", (id,))
     pessoa = cursor.fetchone()
     conn.close()
 
