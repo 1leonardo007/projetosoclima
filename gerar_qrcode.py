@@ -27,4 +27,3 @@ if resultado:
     print(f"✅ QR Code gerado para {nome} (ID: {id_pessoa}) → {caminho}")
 else:
     print(f"❌ Nenhuma pessoa com ID {id_pessoa} encontrada.")
-
