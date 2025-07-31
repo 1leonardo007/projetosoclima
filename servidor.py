@@ -109,8 +109,9 @@ def pessoa(id):
         return render_template('pessoa.html', pessoa=pessoa)
     return "Pessoa não encontrada", 404
 
-# Iniciar servidor
 if __name__ == '__main__':
+    import os
+    port = int(os.environ.get('PORT', 5000))  # define a porta dinamicamente para o Render
     if not os.path.exists(app.config['UPLOAD_FOLDER']):
         os.makedirs(app.config['UPLOAD_FOLDER'])
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=port, debug=True)
