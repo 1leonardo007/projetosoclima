@@ -9,7 +9,7 @@
     <p><strong>Acesso:</strong> {{ pessoa['acesso'] }}</p>
     <p><strong>Entrada:</strong> {{ pessoa['entrada'] }}</p>
     <p><strong>Saída:</strong> {{ pessoa['saida'] }}</p>
-    <a href="{{ url_for('mostrar_pessoa', id=pessoa['id']) }}">Ver Passe</a> |
+    <a href="{{ url_for('pessoa', id=pessoa['id']) }}">Ver Passe</a>
     <a href="{{ url_for('editar', id=pessoa['id']) }}">Editar</a> |
     <form action="{{ url_for('eliminar', id=pessoa['id']) }}" method="POST" style="display:inline;">
         <button type="submit" class="btn" style="background:red;">Eliminar</button>
