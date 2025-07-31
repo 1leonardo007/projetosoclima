@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 {% block content %}
 <h2>Adicionar Pessoa</h2>
-<form method="post" enctype="multipart/form-data">
-    <input type="text" name="nome" placeholder="Nome" required><br><br>
-    <input type="text" name="cargo" placeholder="Cargo" required><br><br>
-    <input type="text" name="acesso" placeholder="Acesso" required><br><br>
-    Entrada: <input type="time" name="entrada" required><br><br>
-    Saída: <input type="time" name="saida" required><br><br>
-    <label><input type="checkbox" name="acesso_noturno"> Acesso Noturno</label><br><br>
-    Foto: <input type="file" name="foto" accept="image/*"><br><br>
-    <button type="submit" class="btn">Salvar</button>
+<form method="POST" enctype="multipart/form-data">
+    <label>Nome:</label><input type="text" name="nome" required>
+    <label>Acesso:</label><input type="text" name="acesso" required>
+    <label>Cargo:</label><input type="text" name="cargo">
+    <label>Entrada:</label><input type="time" name="entrada">
+    <label>Saída:</label><input type="time" name="saida">
+    <label>Acesso Noturno:</label><input type="checkbox" name="acesso_noturno">
+    <label>Foto:</label><input type="file" name="foto" accept="image/*">
+    <button type="submit">Salvar</button>
 </form>
 {% endblock %}

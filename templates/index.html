@@ -1,18 +1,22 @@
 {% extends 'base.html' %}
 {% block content %}
 <h2>Lista de Pessoas</h2>
-<div style="display: flex; flex-wrap: wrap; gap: 20px;">
+<div class="card-grid">
     {% for p in pessoas %}
-    <div style="background-color: #1f1f1f; padding: 15px; border-radius: 10px; width: 240px; text-align: center;">
-        <img src="{{ url_for('foto', filename=p.foto) if p.foto else '/static/default.jpg' }}" alt="Foto" width="120" height="120" style="border-radius: 50%; object-fit: cover;"><br><br>
-        <strong>{{ p.nome }}</strong><br>
-        Cargo: {{ p.cargo }}<br>
-        Acesso: {{ p.acesso }}<br>
-        Entrada: {{ p.entrada }}<br>
-        Saída: {{ p.saida }}<br>
-        <img src="https://api.qrserver.com/v1/create-qr-code/?data={{ request.host_url }}pessoa/{{ p.id }}&size=100x100" alt="QR Code"><br><br>
-        <a href="{{ url_for('editar', id=p.id) }}" class="btn">Editar</a>
-        <a href="{{ url_for('apagar', id=p.id) }}" class="btn" onclick="return confirm('Deseja realmente apagar?')">Apagar</a>
+    <div class="card">
+        <img src="{{ url_for('foto', filename=p.foto) }}" alt="Foto" class="foto-perfil">
+        <h3>{{ p.nome }}</h3>
+        <p><strong>Cargo:</strong> {{ p.cargo }}</p>
+        <p><strong>Acesso:</strong> {{ p.acesso }}</p>
+        <p><strong>Entrada:</strong> {{ p.entrada }}</p>
+        <p><strong>Saída:</strong> {{ p.saida }}</p>
+        <p><strong>Noturno:</strong> {{ 'Sim' if p.acesso_noturno else 'Não' }}</p>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?data={{ request.host_url }}pessoa/{{ p.id }}&size=100x100">
+        <div class="acoes">
+            <a href="{{ url_for('pessoa', id=p.id) }}">Ver</a> |
+            <a href="{{ url_for('editar', id=p.id) }}">Editar</a> |
+            <a href="{{ url_for('apagar', id=p.id) }}" onclick="return confirm('Apagar?')">Apagar</a>
+        </div>
     </div>
     {% endfor %}
 </div>

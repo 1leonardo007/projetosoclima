@@ -1,20 +1,18 @@
 {% extends 'base.html' %}
 {% block content %}
 <h2>Editar Pessoa</h2>
-<form method="post" enctype="multipart/form-data">
-    <input type="text" name="nome" value="{{ pessoa.nome }}" required><br><br>
-    <input type="text" name="cargo" value="{{ pessoa.cargo }}" required><br><br>
-    <input type="text" name="acesso" value="{{ pessoa.acesso }}" required><br><br>
-    Entrada: <input type="time" name="entrada" value="{{ pessoa.entrada }}" required><br><br>
-    Saída: <input type="time" name="saida" value="{{ pessoa.saida }}" required><br><br>
-    <label><input type="checkbox" name="acesso_noturno" {% if pessoa.acesso_noturno %}checked{% endif %}> Acesso Noturno</label><br><br>
-    Foto atual:<br>
+<form method="POST" enctype="multipart/form-data">
+    <label>Nome:</label><input type="text" name="nome" value="{{ pessoa.nome }}" required>
+    <label>Acesso:</label><input type="text" name="acesso" value="{{ pessoa.acesso }}" required>
+    <label>Cargo:</label><input type="text" name="cargo" value="{{ pessoa.cargo }}">
+    <label>Entrada:</label><input type="time" name="entrada" value="{{ pessoa.entrada }}">
+    <label>Saída:</label><input type="time" name="saida" value="{{ pessoa.saida }}">
+    <label>Acesso Noturno:</label><input type="checkbox" name="acesso_noturno" {% if pessoa.acesso_noturno %}checked{% endif %}>
+    <label>Foto:</label><input type="file" name="foto" accept="image/*">
     {% if pessoa.foto %}
-        <img src="{{ url_for('foto', filename=pessoa.foto) }}" alt="Foto atual" width="100"><br>
-    {% else %}
-        Nenhuma foto.<br>
+        <p>Foto atual:</p>
+        <img src="{{ url_for('foto', filename=pessoa.foto) }}" class="foto-perfil">
     {% endif %}
-    <br>Nova foto: <input type="file" name="foto" accept="image/*"><br><br>
-    <button type="submit" class="btn">Atualizar</button>
+    <button type="submit">Atualizar</button>
 </form>
 {% endblock %}

@@ -1,0 +1,66 @@
+body {
+    background-color: #121212;
+    color: #e0e0e0;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+.container {
+    width: 90%;
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
+}
+h1, h2 {
+    text-align: center;
+}
+nav a {
+    color: #00c3ff;
+    text-decoration: none;
+    margin: 0 10px;
+}
+hr {
+    border: 1px solid #333;
+}
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+input[type="text"], input[type="time"], input[type="file"] {
+    padding: 8px;
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+    border: 1px solid #333;
+}
+button {
+    padding: 10px;
+    background-color: #00c3ff;
+    color: black;
+    border: none;
+    cursor: pointer;
+}
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+.card {
+    background-color: #1e1e1e;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    border: 1px solid #333;
+}
+.foto-perfil {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+.acoes a {
+    color: #00c3ff;
+    text-decoration: none;
+    margin: 0 5px;
+}

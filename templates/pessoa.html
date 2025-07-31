@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
-<h2>{{ pessoa.nome }}</h2>
-<div style="text-align: center;">
-    <img src="{{ url_for('foto', filename=pessoa.foto) if pessoa.foto else '/static/default.jpg' }}" width="150" height="150" style="border-radius: 50%; object-fit: cover;"><br><br>
-    Cargo: {{ pessoa.cargo }}<br>
-    Acesso: {{ pessoa.acesso }}<br>
-    Entrada: {{ pessoa.entrada }}<br>
-    Saída: {{ pessoa.saida }}<br>
-    Acesso Noturno: {{ 'Sim' if pessoa.acesso_noturno else 'Não' }}<br><br>
-    <img src="https://api.qrserver.com/v1/create-qr-code/?data={{ request.host_url }}pessoa/{{ pessoa.id }}&size=150x150" alt="QR Code"><br>
+<div class="card">
+    <img src="{{ url_for('foto', filename=pessoa.foto) }}" class="foto-perfil">
+    <h3>{{ pessoa.nome }}</h3>
+    <p><strong>Cargo:</strong> {{ pessoa.cargo }}</p>
+    <p><strong>Acesso:</strong> {{ pessoa.acesso }}</p>
+    <p><strong>Entrada:</strong> {{ pessoa.entrada }}</p>
+    <p><strong>Saída:</strong> {{ pessoa.saida }}</p>
+    <p><strong>Noturno:</strong> {{ 'Sim' if pessoa.acesso_noturno else 'Não' }}</p>
+    <img src="https://api.qrserver.com/v1/create-qr-code/?data={{ request.host_url }}pessoa/{{ pessoa.id }}&size=150x150">
 </div>
 {% endblock %}

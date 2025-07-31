@@ -2,62 +2,18 @@
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
-    <title>Gestão de Acesso</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
-    <style>
-        body {
-            background-color: #121212;
-            color: #ffffff;
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background-color: #1f1f1f;
-            padding: 20px;
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-        }
-        nav {
-            background-color: #292929;
-            padding: 10px;
-            text-align: center;
-        }
-        nav a {
-            color: #ffffff;
-            text-decoration: none;
-            margin: 0 15px;
-            font-weight: bold;
-        }
-        nav a:hover {
-            color: #1e90ff;
-        }
-        main {
-            padding: 20px;
-        }
-        .btn {
-            background-color: #1e90ff;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            text-decoration: none;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        .btn:hover {
-            background-color: #0d6efd;
-        }
-    </style>
+    <title>Sistema de Acesso</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilo.css') }}">
 </head>
 <body>
-    <header>Gestão de Acesso</header>
-    <nav>
-        <a href="{{ url_for('index') }}">Início</a>
-        <a href="{{ url_for('adicionar') }}">Adicionar Pessoa</a>
-    </nav>
-    <main>
+    <div class="container">
+        <h1>Sistema de Identificação</h1>
+        <nav>
+            <a href="{{ url_for('index') }}">Início</a> |
+            <a href="{{ url_for('adicionar') }}">Adicionar Pessoa</a>
+        </nav>
+        <hr>
         {% block content %}{% endblock %}
-    </main>
+    </div>
 </body>
 </html>
