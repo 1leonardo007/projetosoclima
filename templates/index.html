@@ -1,48 +1,15 @@
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <title>Lista de Pessoas</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-</head>
-<body class="bg-light">
-    <div class="container mt-4">
-        <h2 class="mb-4 text-center">Registros de Funcionários</h2>
-        <a href="/adicionar" class="btn btn-success mb-3">Adicionar Novo</a>
-        <div class="table-responsive">
-            <table class="table table-striped table-bordered align-middle">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Nome</th>
-                        <th>Cargo</th>
-                        <th>Acesso</th>
-                        <th>Foto</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for pessoa in pessoas %}
-                    <tr>
-                        <td>{{ pessoa.nome }}</td>
-                        <td>{{ pessoa.cargo }}</td>
-                        <td>{{ pessoa.acesso }}</td>
-                        <td>
-                            {% if pessoa.foto %}
-                                <img src="{{ url_for('foto', filename=pessoa.foto) }}" alt="Foto" width="60">
-                            {% else %}
-                                Sem foto
-                            {% endif %}
-                        </td>
-                        <td>
-                            <a href="/pessoa/{{ pessoa.id }}" class="btn btn-primary btn-sm">Ver</a>
-                            <a href="/editar/{{ pessoa.id }}" class="btn btn-warning btn-sm">Editar</a>
-                            <a href="/apagar/{{ pessoa.id }}" class="btn btn-danger btn-sm">Apagar</a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+{% extends 'base.html' %}
+{% block conteudo %}
+<h2>Lista de Pessoas</h2>
+<div class="row">
+    {% for pessoa in pessoas %}
+    <div class="col-md-4">
+        <div class="card">
+            <h4>{{ pessoa.nome }}</h4>
+            <p>ID: {{ pessoa.id }}</p>
+            <a href="{{ url_for('ver_pessoa', pessoa_id=pessoa.id) }}" class="btn btn-outline-light btn-sm">Ver Detalhes</a>
         </div>
     </div>
-</body>
-</html>
+    {% endfor %}
+</div>
+{% endblock %}
