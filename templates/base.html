@@ -2,87 +2,62 @@
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
-    <title>SOCLIMA - Sistema de Acesso</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gestão de Acesso</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
     <style>
         body {
-            margin: 0;
-            font-family: 'Segoe UI', sans-serif;
             background-color: #121212;
             color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
         }
         header {
             background-color: #1f1f1f;
-            padding: 1rem;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        nav {
+            background-color: #292929;
+            padding: 10px;
             text-align: center;
         }
-        header img {
-            height: 60px;
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+        nav a:hover {
+            color: #1e90ff;
         }
         main {
-            padding: 2rem;
-            max-width: 1000px;
-            margin: auto;
-        }
-        .card {
-            background-color: #1e1e1e;
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.6);
+            padding: 20px;
         }
         .btn {
-            background-color: #2979ff;
+            background-color: #1e90ff;
             color: white;
             border: none;
-            padding: 0.6rem 1.2rem;
-            border-radius: 4px;
+            padding: 8px 15px;
+            text-decoration: none;
             cursor: pointer;
+            border-radius: 5px;
         }
         .btn:hover {
-            background-color: #1565c0;
-        }
-        a {
-            color: #90caf9;
-            text-decoration: none;
-        }
-        footer {
-            text-align: center;
-            padding: 1rem;
-            background-color: #1f1f1f;
-            color: #aaa;
-        }
-        input, select {
-            padding: 0.5rem;
-            margin: 0.3rem 0;
-            border: none;
-            border-radius: 4px;
-            width: 100%;
-            background-color: #2e2e2e;
-            color: white;
-        }
-        label {
-            margin-top: 1rem;
-            display: block;
-        }
-        img.foto {
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-            border-radius: 50%;
-            margin: 10px 0;
+            background-color: #0d6efd;
         }
     </style>
 </head>
 <body>
-<header>
-    <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
-</header>
-<main>
-    {% block content %}{% endblock %}
-</main>
-<footer>
-    &copy; {{ year }} SOCLIMA. Todos os direitos reservados.
-</footer>
+    <header>Gestão de Acesso</header>
+    <nav>
+        <a href="{{ url_for('index') }}">Início</a>
+        <a href="{{ url_for('adicionar') }}">Adicionar Pessoa</a>
+    </nav>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
 </body>
 </html>
