@@ -1,19 +1,35 @@
 {% extends 'base.html' %}
 {% block content %}
-<h2>Lista de Pessoas</h2>
-<a href="{{ url_for('adicionar') }}" class="btn">Adicionar Nova Pessoa</a>
-{% for pessoa in pessoas %}
-<div class="card">
-    <img src="{{ url_for('static', filename='fotos/' ~ pessoa['foto']) }}" class="foto" alt="Foto">
-    <h3>{{ pessoa['nome'] }}</h3>
-    <p><strong>Acesso:</strong> {{ pessoa['acesso'] }}</p>
-    <p><strong>Entrada:</strong> {{ pessoa['entrada'] }}</p>
-    <p><strong>Saída:</strong> {{ pessoa['saida'] }}</p>
-    <a href="{{ url_for('pessoa', id=pessoa['id']) }}">Ver Passe</a>
-    <a href="{{ url_for('editar', id=pessoa['id']) }}">Editar</a> |
-    <form action="{{ url_for('eliminar', id=pessoa['id']) }}" method="POST" style="display:inline;">
-        <button type="submit" class="btn" style="background:red;">Eliminar</button>
-    </form>
-</div>
-{% endfor %}
+
+<h2 class="mb-4">Lista de Pessoas</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Acesso</th>
+            <th>Entrada</th>
+            <th>Saída</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for pessoa in pessoas %}
+        <tr>
+            <td>{{ pessoa.nome }}</td>
+            <td>{{ pessoa.acesso }}</td>
+            <td>{{ pessoa.entrada }}</td>
+            <td>{{ pessoa.saida }}</td>
+            <td>
+                <a href="{{ url_for('mostrar_pessoa', id=pessoa.id) }}" class="btn btn-sm btn-info">Ver</a>
+                <a href="{{ url_for('editar', id=pessoa.id) }}" class="btn btn-sm btn-warning">Editar</a>
+                <form action="{{ url_for('eliminar', id=pessoa.id) }}" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
 {% endblock %}
