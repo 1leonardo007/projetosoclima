@@ -1,47 +1,116 @@
-from flask import Flask, render_template
-import sqlite3
 import os
-import qrcode
+import sqlite3
+from flask import Flask, render_template, request, redirect, url_for
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
-DB_PATH = 'dados.db'
-QRCODE_PATH = 'static/qrcodes'
 
-# Página inicial
-@app.route("/")
-def home():
-    return 'Use /pessoa/<id> para ver dados ou /gerar_qrcode/<id> para gerar QR.'
+# Configurações de pasta de upload
+app.config['UPLOAD_FOLDER'] = 'static/fotos'
+app.config['MAX_CONTENT_LENGTH'] = 3 * 1024 * 1024  # 3MB
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
-# Página que exibe dados da pessoa
-@app.route("/pessoa/<int:id>")
-def exibir_pessoa(id):
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
-    cursor.execute("""
-        SELECT id, nome, acesso, entrada, saida, acesso_noturno, foto, cargo
-        FROM informacoes
-        WHERE id = ?
-    """, (id,))
-    pessoa = cursor.fetchone()
+# Função para verificar extensão da imagem
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+# Conexão com banco de dados
+def get_db():
+    conn = sqlite3.connect('dados.db')
+    conn.row_factory = sqlite3.Row
+    return conn
+
+# Página principal (admin)
+@app.route('/admin')
+def admin():
+    conn = get_db()
+    pessoas = conn.execute('SELECT * FROM informacoes').fetchall()
     conn.close()
+    return render_template('index.html', pessoas=pessoas)
 
+# Adicionar pessoa
+@app.route('/adicionar', methods=['GET', 'POST'])
+def adicionar():
+    if request.method == 'POST':
+        nome = request.form['nome']
+        acesso = request.form['acesso']
+        cargo = request.form['cargo']
+        entrada = request.form['entrada']
+        saida = request.form['saida']
+        acesso_noturno = 1 if 'acesso_noturno' in request.form else 0
+
+        # Foto
+        foto = None
+        if 'foto' in request.files:
+            foto_file = request.files['foto']
+            if foto_file and allowed_file(foto_file.filename):
+                foto = secure_filename(foto_file.filename)
+                foto_path = os.path.join(app.config['UPLOAD_FOLDER'], foto)
+                foto_file.save(foto_path)
+
+        conn = get_db()
+        conn.execute(
+            'INSERT INTO informacoes (nome, acesso, cargo, entrada, saida, acesso_noturno, foto) VALUES (?, ?, ?, ?, ?, ?, ?)',
+            (nome, acesso, cargo, entrada, saida, acesso_noturno, foto)
+        )
+        conn.commit()
+        conn.close()
+        return redirect('/admin')
+    return render_template('adicionar.html')
+
+# Editar pessoa
+@app.route('/editar/<int:id>', methods=['GET', 'POST'])
+def editar(id):
+    conn = get_db()
+    pessoa = conn.execute('SELECT * FROM informacoes WHERE id = ?', (id,)).fetchone()
+
+    if request.method == 'POST':
+        nome = request.form['nome']
+        acesso = request.form['acesso']
+        cargo = request.form['cargo']
+        entrada = request.form['entrada']
+        saida = request.form['saida']
+        acesso_noturno = 1 if 'acesso_noturno' in request.form else 0
+
+        foto = pessoa['foto']
+        if 'foto' in request.files:
+            foto_file = request.files['foto']
+            if foto_file and allowed_file(foto_file.filename):
+                foto = secure_filename(foto_file.filename)
+                foto_path = os.path.join(app.config['UPLOAD_FOLDER'], foto)
+                foto_file.save(foto_path)
+
+        conn.execute(
+            'UPDATE informacoes SET nome=?, acesso=?, cargo=?, entrada=?, saida=?, acesso_noturno=?, foto=? WHERE id=?',
+            (nome, acesso, cargo, entrada, saida, acesso_noturno, foto, id)
+        )
+        conn.commit()
+        conn.close()
+        return redirect('/admin')
+
+    return render_template('editar.html', pessoa=pessoa)
+
+# Excluir pessoa
+@app.route('/excluir/<int:id>')
+def excluir(id):
+    conn = get_db()
+    conn.execute('DELETE FROM informacoes WHERE id=?', (id,))
+    conn.commit()
+    conn.close()
+    return redirect('/admin')
+
+# Página pública por ID
+@app.route('/pessoa/<int:id>')
+def pessoa(id):
+    conn = get_db()
+    pessoa = conn.execute('SELECT * FROM informacoes WHERE id=?', (id,)).fetchone()
+    conn.close()
     if pessoa:
-        return render_template("pessoas.html", pessoa=pessoa)
-    else:
-        return "Pessoa não encontrada", 404
+        return render_template('pessoa.html', pessoa=pessoa)
+    return "Pessoa não encontrada", 404
 
-# Gera QR Code com link para a pessoa
-@app.route("/gerar_qrcode/<int:id>")
-def gerar_qrcode(id):
-    url = f"https://projetosoclima.onrender.com/pessoa/{id}"
-    qr = qrcode.make(url)
-    if not os.path.exists(QRCODE_PATH):
-        os.makedirs(QRCODE_PATH)
-    caminho = os.path.join(QRCODE_PATH, f"{id}.png")
-    qr.save(caminho)
-    return f"QR Code gerado para ID {id}: <br><img src='/{caminho}' width='200'>"
-
-# Executa com waitress em produção
-if __name__ == "__main__":
-    from waitress import serve
-    serve(app, host="0.0.0.0", port=10000)
+# Iniciar servidor
+if __name__ == '__main__':
+    if not os.path.exists(app.config['UPLOAD_FOLDER']):
+        os.makedirs(app.config['UPLOAD_FOLDER'])
+    app.run(debug=True)

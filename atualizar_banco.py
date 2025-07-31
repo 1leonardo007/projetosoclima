@@ -1,27 +1,23 @@
 import sqlite3
 
-# Conecta à base de dados
+# Conecta ao banco de dados
 conn = sqlite3.connect("dados.db")
 cursor = conn.cursor()
 
-# Adiciona a coluna 'cargo' se ela ainda não existir
-try:
-    cursor.execute("ALTER TABLE informacoes ADD COLUMN cargo TEXT;")
-    print("✅ Coluna 'cargo' adicionada.")
-except sqlite3.OperationalError:
-    print("⚠️ A coluna 'cargo' já existe.")
+# Dados que você quer atualizar (exemplo para o ID 6)
+id_pessoa = 2
+nova_foto = "leonardo2.jpg"
+novo_cargo = "Engenheiro Informático"
 
-# Atualiza os cargos para os IDs desejados
-cargos = {
-    2: "Gerente",
-    3: "Administrador",
-    4: "Engenheiro Informática"
-}
+# Comando SQL para atualizar
+cursor.execute("""
+    UPDATE informacoes
+    SET foto = ?, cargo = ?
+    WHERE id = ?
+""", (nova_foto, novo_cargo, id_pessoa))
 
-for id_pessoa, cargo in cargos.items():
-    cursor.execute("UPDATE informacoes SET cargo = ? WHERE id = ?", (cargo, id_pessoa))
-    print(f"🔁 Cargo '{cargo}' adicionado ao ID {id_pessoa}")
-
+# Salva as alterações
 conn.commit()
 conn.close()
-print("✅ Banco de dados atualizado com sucesso.")
+
+print(f"✅ Dados atualizados com sucesso para o ID {id_pessoa}")

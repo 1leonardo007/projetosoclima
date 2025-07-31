@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel SOCLIMA</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+<div class="container py-5">
+    <h1 class="mb-4">Painel Administrativo - SOCLIMA</h1>
+    <a href="{{ url_for('adicionar') }}" class="btn btn-success mb-3">+ Adicionar Pessoa</a>
+    <table class="table table-bordered table-hover bg-white">
+        <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Foto</th>
+            <th>Nome</th>
+            <th>Acesso</th>
+            <th>Cargo</th>
+            <th>Entrada</th>
+            <th>Saída</th>
+            <th>Acesso Noturno</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for pessoa in pessoas %}
+            <tr>
+                <td>{{ pessoa.id }}</td>
+                <td>
+                    {% if pessoa.foto %}
+                        <img src="{{ url_for('static', filename='fotos/' + pessoa.foto) }}" width="60">
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+                <td>{{ pessoa.nome }}</td>
+                <td>{{ pessoa.acesso }}</td>
+                <td>{{ pessoa.cargo }}</td>
+                <td>{{ pessoa.entrada }}</td>
+                <td>{{ pessoa.saida }}</td>
+                <td>{{ 'Sim' if pessoa.acesso_noturno else 'Não' }}</td>
+                <td>
+                    <a href="{{ url_for('editar', id=pessoa.id) }}" class="btn btn-sm btn-primary">Editar</a>
+                    <a href="{{ url_for('excluir', id=pessoa.id) }}" class="btn btn-sm btn-danger" onclick="return confirm('Deseja excluir?')">Excluir</a>
+                    <a href="{{ url_for('pessoa', id=pessoa.id) }}" class="btn btn-sm btn-secondary">Ver</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
