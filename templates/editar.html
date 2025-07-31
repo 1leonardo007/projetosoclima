@@ -1,52 +1,22 @@
 {% extends 'base.html' %}
-
-{% block title %}Editar Pessoa{% endblock %}
-
 {% block content %}
-<div class="container">
-    <h2>Editar Informações</h2>
-    <form method="POST" enctype="multipart/form-data">
-        <div class="card">
-            <div class="card-body">
-                <div class="form-group">
-                    <label for="nome">Nome:</label>
-                    <input type="text" name="nome" class="form-control" value="{{ pessoa.nome }}" required>
-                </div>
-                <div class="form-group">
-                    <label for="cargo">Cargo:</label>
-                    <input type="text" name="cargo" class="form-control" value="{{ pessoa.cargo }}">
-                </div>
-                <div class="form-group">
-                    <label for="acesso">Acesso:</label>
-                    <input type="text" name="acesso" class="form-control" value="{{ pessoa.acesso }}">
-                </div>
-                <div class="form-group">
-                    <label for="entrada">Horário de Entrada:</label>
-                    <input type="time" name="entrada" class="form-control" value="{{ pessoa.entrada }}">
-                </div>
-                <div class="form-group">
-                    <label for="saida">Horário de Saída:</label>
-                    <input type="time" name="saida" class="form-control" value="{{ pessoa.saida }}">
-                </div>
-                <div class="form-group form-check">
-                    <input type="checkbox" name="acesso_noturno" class="form-check-input" id="acessoNoturno" {% if pessoa.acesso_noturno %}checked{% endif %}>
-                    <label class="form-check-label" for="acessoNoturno">Acesso Noturno</label>
-                </div>
+<h2>Editar Pessoa</h2>
+<form method="POST" enctype="multipart/form-data">
+    <label for="nome">Nome:</label>
+    <input type="text" name="nome" value="{{ pessoa['nome'] }}" required>
 
-                <div class="form-group">
-                    <label for="foto">Foto (deixe em branco para manter a atual):</label>
-                    <input type="file" name="foto" class="form-control-file">
-                    {% if pessoa.foto %}
-                        <div class="mt-3">
-                            <p>Foto atual:</p>
-                            <img src="{{ url_for('foto', filename=pessoa.foto) }}" alt="Foto" class="foto-preview">
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-        <button type="submit" class="btn btn-primary mt-3">Salvar Alterações</button>
-        <a href="/" class="btn btn-secondary mt-3">Cancelar</a>
-    </form>
-</div>
+    <label for="acesso">Acesso:</label>
+    <input type="text" name="acesso" value="{{ pessoa['acesso'] }}" required>
+
+    <label for="entrada">Horário de Entrada:</label>
+    <input type="text" name="entrada" value="{{ pessoa['entrada'] }}" required>
+
+    <label for="saida">Horário de Saída:</label>
+    <input type="text" name="saida" value="{{ pessoa['saida'] }}" required>
+
+    <label for="foto">Nova Foto (opcional):</label>
+    <input type="file" name="foto">
+
+    <button type="submit" class="btn">Atualizar</button>
+</form>
 {% endblock %}

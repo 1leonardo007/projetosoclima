@@ -1,15 +1,22 @@
 {% extends 'base.html' %}
-{% block conteudo %}
-<h2>Lista de Pessoas</h2>
-<div class="row">
-    {% for pessoa in pessoas %}
-    <div class="col-md-4">
-        <div class="card">
-            <h4>{{ pessoa.nome }}</h4>
-            <p>ID: {{ pessoa.id }}</p>
-            <a href="{{ url_for('ver_pessoa', pessoa_id=pessoa.id) }}" class="btn btn-outline-light btn-sm">Ver Detalhes</a>
-        </div>
-    </div>
-    {% endfor %}
-</div>
+{% block content %}
+<h2>Adicionar Pessoa</h2>
+<form method="POST" enctype="multipart/form-data">
+    <label for="nome">Nome:</label>
+    <input type="text" name="nome" required>
+
+    <label for="acesso">Acesso:</label>
+    <input type="text" name="acesso" required>
+
+    <label for="entrada">Horário de Entrada:</label>
+    <input type="text" name="entrada" required>
+
+    <label for="saida">Horário de Saída:</label>
+    <input type="text" name="saida" required>
+
+    <label for="foto">Foto:</label>
+    <input type="file" name="foto" required>
+
+    <button type="submit" class="btn">Adicionar</button>
+</form>
 {% endblock %}

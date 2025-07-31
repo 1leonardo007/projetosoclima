@@ -1,18 +1,12 @@
 {% extends 'base.html' %}
-{% block conteudo %}
-<div class="card text-center">
-    {% if pessoa.foto %}
-        <img src="{{ url_for('static', filename='uploads/' ~ pessoa.foto) }}" class="rounded-circle mb-3" width="150" height="150" alt="Foto">
-    {% else %}
-        <img src="{{ url_for('static', filename='placeholder.png') }}" class="rounded-circle mb-3" width="150" height="150" alt="Sem Foto">
-    {% endif %}
-    <h3>{{ pessoa.nome }}</h3>
-    <p><strong>ID:</strong> {{ pessoa.id }}</p>
-    <p><strong>Acesso:</strong> {{ pessoa.acesso }}</p>
-    <p><strong>Entrada:</strong> {{ pessoa.entrada }}</p>
-    <p><strong>Saída:</strong> {{ pessoa.saida }}</p>
-    <div>
-        <img src="{{ url_for('static', filename='qrcodes/' ~ pessoa.qr_code) }}" alt="QR Code">
-    </div>
+{% block content %}
+<h2>Cartão de Acesso</h2>
+<div class="card" style="text-align: center;">
+    <img src="{{ url_for('static', filename='fotos/' ~ pessoa['foto']) }}" class="foto" alt="Foto">
+    <h3>{{ pessoa['nome'] }}</h3>
+    <p><strong>Acesso:</strong> {{ pessoa['acesso'] }}</p>
+    <p><strong>Entrada:</strong> {{ pessoa['entrada'] }}</p>
+    <p><strong>Saída:</strong> {{ pessoa['saida'] }}</p>
+    <a href="{{ url_for('index') }}" class="btn">Voltar</a>
 </div>
 {% endblock %}
