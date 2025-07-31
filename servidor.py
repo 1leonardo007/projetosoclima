@@ -1,17 +1,23 @@
-from flask import Flask, render_template, request, redirect, url_for
-import sqlite3
 import os
+import sqlite3
+from flask import Flask, render_template, request, redirect, send_from_directory, url_for
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
-DATABASE = 'soclima.db'
+app.config['UPLOAD_FOLDER'] = 'static/fotos'
+app.config['MAX_CONTENT_LENGTH'] = 3 * 1024 * 1024  # Máximo 3MB
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
-# Função para conectar ao banco de dados
+# Verifica se extensão é permitida
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+# Conecta à base de dados
 def get_db():
-    conn = sqlite3.connect(DATABASE)
+    conn = sqlite3.connect('dados.db')
     conn.row_factory = sqlite3.Row
     return conn
 
-# Página principal - lista os dados
 @app.route('/')
 def index():
     conn = get_db()
@@ -19,24 +25,40 @@ def index():
     conn.close()
     return render_template('index.html', pessoas=pessoas)
 
-# Página para adicionar novo registro
+@app.route('/pessoa/<int:id>')
+def pessoa(id):
+    conn = get_db()
+    pessoa = conn.execute('SELECT * FROM informacoes WHERE id = ?', (id,)).fetchone()
+    conn.close()
+    return render_template('pessoa.html', pessoa=pessoa)
+
 @app.route('/adicionar', methods=['GET', 'POST'])
 def adicionar():
     if request.method == 'POST':
         nome = request.form['nome']
         acesso = request.form['acesso']
+        cargo = request.form['cargo']
         entrada = request.form['entrada']
         saida = request.form['saida']
+        acesso_noturno = 1 if 'acesso_noturno' in request.form else 0
+
+        foto = None
+        if 'foto' in request.files:
+            file = request.files['foto']
+            if file and allowed_file(file.filename):
+                foto = secure_filename(file.filename)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], foto))
 
         conn = get_db()
-        conn.execute('INSERT INTO informacoes (nome, acesso, entrada, saida) VALUES (?, ?, ?, ?)',
-                     (nome, acesso, entrada, saida))
+        conn.execute('''
+            INSERT INTO informacoes (nome, acesso, cargo, entrada, saida, acesso_noturno, foto)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        ''', (nome, acesso, cargo, entrada, saida, acesso_noturno, foto))
         conn.commit()
         conn.close()
         return redirect('/')
     return render_template('adicionar.html')
 
-# Editar registro existente
 @app.route('/editar/<int:id>', methods=['GET', 'POST'])
 def editar(id):
     conn = get_db()
@@ -45,43 +67,42 @@ def editar(id):
     if request.method == 'POST':
         nome = request.form['nome']
         acesso = request.form['acesso']
+        cargo = request.form['cargo']
         entrada = request.form['entrada']
         saida = request.form['saida']
+        acesso_noturno = 1 if 'acesso_noturno' in request.form else 0
 
-        conn.execute('UPDATE informacoes SET nome=?, acesso=?, entrada=?, saida=? WHERE id=?',
-                     (nome, acesso, entrada, saida, id))
+        foto = pessoa['foto']
+        if 'foto' in request.files:
+            file = request.files['foto']
+            if file and allowed_file(file.filename):
+                foto = secure_filename(file.filename)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], foto))
+
+        conn.execute('''
+            UPDATE informacoes
+            SET nome=?, acesso=?, cargo=?, entrada=?, saida=?, acesso_noturno=?, foto=?
+            WHERE id=?
+        ''', (nome, acesso, cargo, entrada, saida, acesso_noturno, foto, id))
         conn.commit()
         conn.close()
         return redirect('/')
-    conn.close()
     return render_template('editar.html', pessoa=pessoa)
 
-# Excluir registro (função que estava faltando)
-@app.route('/excluir/<int:id>')
-def excluir(id):
+@app.route('/apagar/<int:id>')
+def apagar(id):
     conn = get_db()
     conn.execute('DELETE FROM informacoes WHERE id = ?', (id,))
     conn.commit()
     conn.close()
     return redirect('/')
 
-# Iniciar servidor
-if __name__ == '__main__':
-    if not os.path.exists(DATABASE):
-        # Cria o banco e a tabela caso não existam
-        conn = get_db()
-        conn.execute('''
-            CREATE TABLE informacoes (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                nome TEXT NOT NULL,
-                acesso TEXT NOT NULL,
-                entrada TEXT NOT NULL,
-                saida TEXT NOT NULL
-            )
-        ''')
-        conn.commit()
-        conn.close()
-        print('Banco de dados criado com sucesso.')
+@app.route('/static/fotos/<filename>')
+def foto(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
-    port = int(os.environ.get("PORT", 5000))
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))
+    if not os.path.exists(app.config['UPLOAD_FOLDER']):
+        os.makedirs(app.config['UPLOAD_FOLDER'])
     app.run(host='0.0.0.0', port=port, debug=True)
