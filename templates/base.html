@@ -2,18 +2,42 @@
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
-    <title>Sistema de Acesso</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='estilo.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Acesso</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/logo.png') }}" type="image/png">
 </head>
 <body>
-    <div class="container">
-        <h1>Sistema de Identificação</h1>
-        <nav>
-            <a href="{{ url_for('index') }}">Início</a> |
-            <a href="{{ url_for('adicionar') }}">Adicionar Pessoa</a>
-        </nav>
-        <hr>
-        {% block content %}{% endblock %}
-    </div>
+    <header>
+        <div class="container">
+            <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" class="logo">
+            <h1>Gestão de Acesso</h1>
+            <nav>
+                <a href="{{ url_for('index') }}">Início</a>
+                <a href="{{ url_for('adicionar') }}">Adicionar Pessoa</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class="flash-messages">
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; {{ 2025 }} - Sistema de Gestão de Acesso</p>
+        </div>
+    </footer>
 </body>
 </html>

@@ -1,13 +1,28 @@
-{% extends 'base.html' %}
-{% block content %}
-<div class="card">
-    <img src="{{ url_for('foto', filename=pessoa.foto) }}" class="foto-perfil">
-    <h3>{{ pessoa.nome }}</h3>
-    <p><strong>Cargo:</strong> {{ pessoa.cargo }}</p>
-    <p><strong>Acesso:</strong> {{ pessoa.acesso }}</p>
-    <p><strong>Entrada:</strong> {{ pessoa.entrada }}</p>
-    <p><strong>Saída:</strong> {{ pessoa.saida }}</p>
-    <p><strong>Noturno:</strong> {{ 'Sim' if pessoa.acesso_noturno else 'Não' }}</p>
-    <img src="https://api.qrserver.com/v1/create-qr-code/?data={{ request.host_url }}pessoa/{{ pessoa.id }}&size=150x150">
-</div>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalhes da Pessoa</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="bg-light p-4">
+    <div class="container">
+        <h2>Detalhes da Pessoa</h2>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ pessoa.nome }}</h5>
+                <p><strong>Acesso:</strong> {{ pessoa.acesso }}</p>
+                <p><strong>Cargo:</strong> {{ pessoa.cargo }}</p>
+                <p><strong>Entrada:</strong> {{ pessoa.entrada }}</p>
+                <p><strong>Saída:</strong> {{ pessoa.saida }}</p>
+                <p><strong>Acesso Noturno:</strong> {{ "Sim" if pessoa.acesso_noturno else "Não" }}</p>
+                {% if pessoa.foto %}
+                    <p><strong>Foto:</strong><br>
+                    <img src="{{ url_for('foto', filename=pessoa.foto) }}" width="200"></p>
+                {% endif %}
+            </div>
+        </div>
+        <a href="{{ url_for('index') }}" class="btn btn-secondary mt-3">Voltar</a>
+    </div>
+</body>
+</html>

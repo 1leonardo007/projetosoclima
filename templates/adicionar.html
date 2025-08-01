@@ -1,14 +1,45 @@
-{% extends 'base.html' %}
-{% block content %}
-<h2>Adicionar Pessoa</h2>
-<form method="POST" enctype="multipart/form-data">
-    <label>Nome:</label><input type="text" name="nome" required>
-    <label>Acesso:</label><input type="text" name="acesso" required>
-    <label>Cargo:</label><input type="text" name="cargo">
-    <label>Entrada:</label><input type="time" name="entrada">
-    <label>Saída:</label><input type="time" name="saida">
-    <label>Acesso Noturno:</label><input type="checkbox" name="acesso_noturno">
-    <label>Foto:</label><input type="file" name="foto" accept="image/*">
-    <button type="submit">Salvar</button>
-</form>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Adicionar Pessoa</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="bg-light p-4">
+    <div class="container">
+        <h2>Adicionar Pessoa</h2>
+        <form method="POST" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label>Nome</label>
+                <input type="text" name="nome" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>Acesso</label>
+                <input type="text" name="acesso" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label>Cargo</label>
+                <input type="text" name="cargo" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label>Horário de Entrada</label>
+                <input type="time" name="entrada" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label>Horário de Saída</label>
+                <input type="time" name="saida" class="form-control">
+            </div>
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" name="acesso_noturno">
+                <label class="form-check-label">Permitir Acesso Noturno</label>
+            </div>
+            <div class="mb-3">
+                <label>Foto (opcional)</label>
+                <input type="file" name="foto" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-success">Salvar</button>
+            <a href="{{ url_for('index') }}" class="btn btn-secondary">Voltar</a>
+        </form>
+    </div>
+</body>
+</html>
