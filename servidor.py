@@ -14,9 +14,11 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-# Conecta à base de dados
+# Conecta à base de dados com caminho absoluto fixo
 def get_db():
-    db_path = os.path.join(os.path.dirname(__file__), 'dados.db')
+    base_dir = os.path.abspath(os.path.dirname(__file__))
+    db_path = os.path.join(base_dir, 'dados.db')
+    print("Caminho do banco de dados usado pelo Flask:", db_path)
     conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     return conn
