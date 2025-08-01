@@ -1,29 +1,29 @@
 import os
 import sqlite3
-from flask import Flask, render_template, request, redirect, send_from_directory, url_for
+from flask import Flask, render_template, request, redirect, send_from_directory
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
-# Caminho onde as fotos dos utilizadores serão guardadas
+# Configurações de upload
 app.config['UPLOAD_FOLDER'] = 'static/fotos'
 app.config['MAX_CONTENT_LENGTH'] = 3 * 1024 * 1024  # Máx. 3MB por imagem
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
-# Confirma extensão permitida
+# Verifica se a extensão do arquivo é permitida
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-# Conecta à base de dados com caminho absoluto fixo
+# Conexão com o banco de dados SQLite
 def get_db():
     base_dir = os.path.abspath(os.path.dirname(__file__))
-    db_path = os.path.join(base_dir, 'dados.db')
-    print("Caminho do banco de dados usado pelo Flask:", db_path)
+    db_path = os.path.join(base_dir, 'dados.db')  # Banco na mesma pasta do projeto
+    print("🗄️ Banco de dados usado:", db_path)
     conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     return conn
 
-# Página principal
+# Página principal: lista de pessoas
 @app.route('/')
 def index():
     conn = get_db()
@@ -31,7 +31,7 @@ def index():
     conn.close()
     return render_template('index.html', pessoas=pessoas)
 
-# Página de detalhe de cada pessoa
+# Página com detalhes de uma pessoa
 @app.route('/pessoa/<int:id>')
 def pessoa(id):
     conn = get_db()
@@ -68,7 +68,7 @@ def adicionar():
         return redirect('/')
     return render_template('adicionar.html')
 
-# Editar informações
+# Editar dados de uma pessoa
 @app.route('/editar/<int:id>', methods=['GET', 'POST'])
 def editar(id):
     conn = get_db()
@@ -99,7 +99,7 @@ def editar(id):
         return redirect('/')
     return render_template('editar.html', pessoa=pessoa)
 
-# Apagar pessoa
+# Apagar uma pessoa
 @app.route('/apagar/<int:id>')
 def apagar(id):
     conn = get_db()
@@ -115,11 +115,9 @@ def foto(filename):
 
 # Inicialização
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
-
-    # Cria pasta de fotos, se não existir
     if not os.path.exists(app.config['UPLOAD_FOLDER']):
         os.makedirs(app.config['UPLOAD_FOLDER'])
 
-    print("Banco de dados salvo em:", os.path.abspath("dados.db"))
-    app.run(host='0.0.0.0', port=port, debug=True)
+    print("✔️ Aplicação iniciada!")
+    print("📍 Banco de dados em:", os.path.abspath(os.path.join(os.path.dirname(__file__), 'dados.db')))
+    app.run(host='0.0.0.0', port=5000, debug=True)
